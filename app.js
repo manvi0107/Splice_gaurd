@@ -200,7 +200,7 @@ const Icon = ({ name, size = 18, className = '' }) => {
       window.lucide.createIcons();
     }
   }, [name, className]);
-  return <i data-lucide={name} style={{ width: size, height: size }} className={inline-block align-middle }></i>;
+  return <i data-lucide={name} style={{ width: size, height: size }} className={`inline-block align-middle ${className}`}></i>;
 };
 
 // --- CONVEYOR BELT VISUALIZATION COMPONENT ---
@@ -242,7 +242,7 @@ function ConveyorVisualizer({
             <h3 className="text-sm font-semibold tracking-wide flex items-center gap-2">
               CV-01 Dynamic Conveyor Twin 
               <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                {isRunning ? (beltSpeed > 0 ? ${beltSpeed.toFixed(1)} m/s MOVING : 'IDLE') : 'STOPPED'}
+                {isRunning ? (beltSpeed > 0 ? `${beltSpeed.toFixed(1)} m/s MOVING` : 'IDLE') : 'STOPPED'}
               </span>
             </h3>
             <p className="text-xs text-slate-400">1,000 m Steel-Cord Loop • Monitored Splice Transits</p>
@@ -287,8 +287,7 @@ function ConveyorVisualizer({
           <circle cx="75" cy="95" r="43" fill={isDark ? "#1e293b" : "#94a3b8"} stroke="#06b6d4" strokeWidth="3" />
           <circle cx="75" cy="95" r="16" fill={isDark ? "#0f172a" : "#64748b"} stroke="#38bdf8" strokeWidth="2" />
           <circle cx="75" cy="95" r="5" fill="#38bdf8" />
-          <g transform={
-otate( 75 95)}>
+          <g transform="rotate(0 75 95)">
             <line x1="75" y1="55" x2="75" y2="135" stroke={isDark ? "#475569" : "#cbd5e1"} strokeWidth="2" />
             <line x1="35" y1="95" x2="115" y2="95" stroke={isDark ? "#475569" : "#cbd5e1"} strokeWidth="2" />
           </g>
@@ -298,8 +297,7 @@ otate( 75 95)}>
           <circle cx="725" cy="95" r="43" fill={isDark ? "#1e293b" : "#94a3b8"} stroke="#38bdf8" strokeWidth="3" />
           <circle cx="725" cy="95" r="16" fill={isDark ? "#0f172a" : "#64748b"} stroke="#38bdf8" strokeWidth="2" />
           <circle cx="725" cy="95" r="5" fill="#38bdf8" />
-          <g transform={
-otate( 725 95)}>
+          <g transform="rotate(0 725 95)">
             <line x1="725" y1="55" x2="725" y2="135" stroke={isDark ? "#475569" : "#cbd5e1"} strokeWidth="2" />
             <line x1="685" y1="95" x2="765" y2="95" stroke={isDark ? "#475569" : "#cbd5e1"} strokeWidth="2" />
           </g>
@@ -372,7 +370,7 @@ otate( 725 95)}>
             return (
               <g 
                 key={key} 
-                transform={	ranslate(, )}
+                transform={`translate(${pos.x}, ${pos.y})`}
                 className="cursor-pointer transition-transform duration-200 hover:scale-125"
                 onClick={() => onSelectJoint(key)}
               >
@@ -389,7 +387,7 @@ otate( 725 95)}>
                   stroke="#ffffff" 
                   strokeWidth="1.5" 
                 />
-                <g transform={	ranslate(0, )}>
+                <g transform={`translate(0, ${pos.isTop ? -22 : 22})`}>
                   <rect 
                     x="-22" 
                     y="-8" 
@@ -453,7 +451,7 @@ function LiveSparkline({ data = [], color = '#06b6d4', height = 36, width = 120 
   const points = data.map((val, i) => {
     const x = (i / (data.length - 1)) * width;
     const y = height - ((val - min) / range) * (height - 8) - 4;
-    return ${x.toFixed(1)},;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
   }).join(' ');
 
   return (
@@ -723,7 +721,7 @@ function ActiveInterrogationCard({
           <button
             onClick={startInterrogation}
             disabled={isRunning}
-            className={px-4 py-2 rounded-lg font-medium text-xs flex items-center gap-2 transition-all }
+            className={`px-4 py-2 rounded-lg font-medium text-xs flex items-center gap-2 transition-all ${isRunning ? 'bg-slate-700 text-slate-400 cursor-not-allowed' : 'bg-cyan-600 hover:bg-cyan-500 text-white'}`}
           >
             <Icon name={isRunning ? "loader-2" : "play"} size={14} className={isRunning ? 'animate-spin' : ''} />
             {isRunning ? 'Interrogating...' : 'START INTERROGATION'}
@@ -738,10 +736,10 @@ function ActiveInterrogationCard({
             return (
               <div 
                 key={st.n}
-                className={p-2.5 rounded-lg border transition-all  }
+                className={`p-2.5 rounded-lg border transition-all ${isCurrent ? 'border-cyan-500 bg-cyan-500/10' : isDone ? 'border-emerald-500/40 bg-emerald-500/5' : 'border-slate-800 bg-slate-900/40'}`}
               >
                 <div className="flex items-center gap-1.5 font-bold mb-0.5">
-                  <span className={w-4 h-4 rounded-full flex items-center justify-center text-[10px] }>
+                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${isCurrent ? 'bg-cyan-500 text-white' : isDone ? 'bg-emerald-500 text-white' : 'bg-slate-700 text-slate-400'}`}>
                     {st.n}
                   </span>
                   <span>{st.text}</span>
@@ -813,7 +811,7 @@ function FalseAlarmDemoSection({
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Test 1: Load Change */}
-        <div className={p-4 rounded-xl border transition-all flex flex-col justify-between }>
+        <div className={`p-4 rounded-xl border transition-all flex flex-col justify-between ${currentScenario === 'LOAD_CHANGE' ? 'border-emerald-500 bg-emerald-500/5' : 'border-slate-700/50'}`}>
           <div>
             <div className="flex items-center justify-between mb-2">
               <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Scenario A: Ore Load Surge</h4>
@@ -849,7 +847,7 @@ function FalseAlarmDemoSection({
         </div>
 
         {/* Test 2: Transient Spike */}
-        <div className={p-4 rounded-xl border transition-all flex flex-col justify-between }>
+        <div className={`p-4 rounded-xl border transition-all flex flex-col justify-between ${currentScenario === 'TRANSIENT_SPIKE' ? 'border-amber-500 bg-amber-500/5' : 'border-slate-700/50'}`}>
           <div>
             <div className="flex items-center justify-between mb-2">
               <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Scenario B: Boulder Impact</h4>
@@ -885,7 +883,7 @@ function FalseAlarmDemoSection({
         </div>
 
         {/* Test 3: Persistent Joint Fault */}
-        <div className={p-4 rounded-xl border transition-all flex flex-col justify-between }>
+        <div className={`p-4 rounded-xl border transition-all flex flex-col justify-between ${currentScenario === 'PERSISTENT_FAULT' ? 'border-rose-500 bg-rose-500/5' : 'border-slate-700/50'}`}>
           <div>
             <div className="flex items-center justify-between mb-2">
               <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Scenario C: Splice Decay</h4>
@@ -1178,7 +1176,7 @@ function ConveyorMonitorView({
 
           <button
             onClick={onToggleRunning}
-            className={px-3 py-1.5 rounded font-bold transition-all text-xs flex items-center gap-1.5 }
+            className={`px-3 py-1.5 rounded font-bold transition-all text-xs flex items-center gap-1.5 ${telemetry.isRunning ? 'bg-rose-600 hover:bg-rose-500 text-white' : 'bg-emerald-600 hover:bg-emerald-500 text-white'}`}
           >
             <Icon name={telemetry.isRunning ? 'pause' : 'play'} size={12} />
             {telemetry.isRunning ? 'STOP CONVEYOR' : 'START CONVEYOR'}
@@ -1296,7 +1294,7 @@ function JointHealthView({ joints, onSelectJoint }) {
                     onClick={() => onSelectJoint(key)}
                   >
                     <td className="py-3.5 px-3 font-bold text-slate-100 flex items-center gap-2">
-                      <span className={w-2.5 h-2.5 rounded-full }></span>
+                      <span className={`w-2.5 h-2.5 rounded-full bg-${j.statusColor}-500`}></span>
                       {j.id}
                     </td>
                     <td className="py-3.5 px-3 text-slate-300">{j.location}</td>
@@ -1308,8 +1306,8 @@ function JointHealthView({ joints, onSelectJoint }) {
                         }>{j.healthScore}%</strong>
                         <div className="w-12 bg-slate-700/50 rounded-full h-1.5 overflow-hidden">
                           <div 
-                            className={h-1.5 rounded-full }
-                            style={{ width: ${j.healthScore}% }}
+                            className={`h-1.5 rounded-full ${j.healthScore > 85 ? 'bg-emerald-400' : j.healthScore >= 70 ? 'bg-amber-400' : 'bg-rose-400'}`}
+                            style={{ width: `${j.healthScore}%` }}
                           ></div>
                         </div>
                       </div>
@@ -1322,7 +1320,7 @@ function JointHealthView({ joints, onSelectJoint }) {
                       {j.probableCause}
                     </td>
                     <td className="py-3.5 px-3">
-                      <span className={px-2 py-0.5 rounded text-[10px] font-bold border }>
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${badgeColor}`}>
                         {j.status}
                       </span>
                     </td>
@@ -1356,13 +1354,13 @@ function JointDetailModal({ joint, onClose, onRunInterrogation }) {
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-700 pb-4 mb-4">
           <div className="flex items-center gap-3">
-            <div className={p-2.5 rounded-xl border }>
+            <div className={`p-2.5 rounded-xl border border-${joint.statusColor}-500/40 bg-${joint.statusColor}-500/10 text-${joint.statusColor}-400`}>
               <Icon name="shield-alert" size={22} />
             </div>
             <div>
               <h3 className="text-lg font-bold flex items-center gap-2">
                 {joint.name} Diagnostic File
-                <span className={	ext-xs font-mono px-2.5 py-0.5 rounded-full border }>
+                <span className={`text-xs font-mono px-2.5 py-0.5 rounded-full border border-${joint.statusColor}-500/40 bg-${joint.statusColor}-500/10 text-${joint.statusColor}-400`}>
                   {joint.status}
                 </span>
               </h3>
@@ -1381,7 +1379,7 @@ function JointDetailModal({ joint, onClose, onRunInterrogation }) {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono mb-5">
           <div className="bg-slate-800/40 p-3 rounded-lg border border-slate-700/40">
             <span className="text-slate-400 block text-[11px]">Health Score</span>
-            <span className={	ext-xl font-bold }>
+            <span className={`text-xl font-bold ${joint.healthScore > 85 ? 'text-emerald-400' : joint.healthScore >= 70 ? 'text-amber-400' : 'text-rose-400'}`}>
               {joint.healthScore} / 100
             </span>
             <span className="text-[10px] text-slate-500 block mt-1">Trend: {joint.healthScore < 70 ? 'Declining' : 'Stable'}</span>
@@ -1441,8 +1439,8 @@ function JointDetailModal({ joint, onClose, onRunInterrogation }) {
                   {val}%
                 </span>
                 <div 
-                  className={w-full rounded-t transition-all }
-                  style={{ height: ${val}% }}
+                  className={`w-full rounded-t transition-all`}
+                  style={{ height: `${val}%` }}
                 ></div>
                 <span className="text-[9px] font-mono text-slate-500">C{idx+1}</span>
               </div>
@@ -1497,7 +1495,7 @@ function SensorAnalyticsView({ telemetry, joints }) {
             <button
               key={jId}
               onClick={() => setSelectedSensorJoint(jId)}
-              className={px-3 py-1 rounded font-bold transition-all }
+              className={`px-3 py-1 rounded font-bold transition-all ${jId === selectedSensorJoint ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
             >
               {jId}
             </button>
@@ -1680,7 +1678,7 @@ function ActiveInterrogationLabView({ joints, selectedJoint, onSelectJoint, them
             <button
               key={jId}
               onClick={() => onSelectJoint(jId)}
-              className={px-3 py-1 rounded font-bold transition-all }
+              className={`px-3 py-1 rounded font-bold transition-all ${jId === selectedJoint ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
             >
               {jId}
             </button>
@@ -2294,10 +2292,10 @@ function SystemArchitectureView() {
               <div
                 key={hw.id}
                 onClick={() => setSelectedHw(hw)}
-                className={p-3 rounded-lg border cursor-pointer transition-all flex items-center justify-between text-xs font-mono }
+                className={`p-3 rounded-lg border cursor-pointer transition-all flex items-center justify-between text-xs font-mono ${isSelected ? 'border-cyan-500 bg-cyan-500/10' : 'border-slate-700/50 hover:border-slate-600'}`}
               >
                 <div className="flex items-center gap-2.5">
-                  <div className={p-1.5 rounded }>
+                  <div className={`p-1.5 rounded`}>
                     <Icon name={hw.icon} size={14} />
                   </div>
                   <div>
@@ -2605,7 +2603,7 @@ function App() {
             <button
               onClick={() => setSoundEnabled(!soundEnabled)}
               title={soundEnabled ? 'Mute acoustic chirp effects' : 'Enable acoustic chirp effects'}
-              className={p-2 rounded-lg border transition-all }
+              className={`p-2 rounded-lg border transition-all ${soundEnabled ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-400' : 'border-slate-700 bg-slate-800 text-slate-500'}`}
             >
               <Icon name={soundEnabled ? 'volume-2' : 'volume-x'} size={14} />
             </button>
@@ -2646,42 +2644,42 @@ function App() {
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => handleScenarioSelect('NORMAL')}
-              className={px-2.5 py-1 rounded text-[11px] font-bold transition-all border }
+              className={`px-2.5 py-1 rounded text-[11px] font-bold transition-all border ${currentScenario === 'NORMAL' ? 'bg-cyan-600 border-cyan-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-600'}`}
             >
               NORMAL OPERATION
             </button>
 
             <button
               onClick={() => handleScenarioSelect('LOAD_CHANGE')}
-              className={px-2.5 py-1 rounded text-[11px] font-bold transition-all border }
+              className={`px-2.5 py-1 rounded text-[11px] font-bold transition-all border ${currentScenario === 'LOAD_CHANGE' ? 'bg-cyan-600 border-cyan-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-600'}`}
             >
               LOAD CHANGE
             </button>
 
             <button
               onClick={() => handleScenarioSelect('TRANSIENT_SPIKE')}
-              className={px-2.5 py-1 rounded text-[11px] font-bold transition-all border }
+              className={`px-2.5 py-1 rounded text-[11px] font-bold transition-all border ${currentScenario === 'TRANSIENT_SPIKE' ? 'bg-cyan-600 border-cyan-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-600'}`}
             >
               TRANSIENT VIBRATION
             </button>
 
             <button
               onClick={() => handleScenarioSelect('PERSISTENT_FAULT')}
-              className={px-2.5 py-1 rounded text-[11px] font-bold transition-all border }
+              className={`px-2.5 py-1 rounded text-[11px] font-bold transition-all border ${currentScenario === 'PERSISTENT_FAULT' ? 'bg-cyan-600 border-cyan-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-600'}`}
             >
               PERSISTENT JOINT FAULT
             </button>
 
             <button
               onClick={() => handleScenarioSelect('ACTIVE_INTERROGATION')}
-              className={px-2.5 py-1 rounded text-[11px] font-bold transition-all border }
+              className={`px-2.5 py-1 rounded text-[11px] font-bold transition-all border ${currentScenario === 'ACTIVE_INTERROGATION' ? 'bg-cyan-600 border-cyan-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-600'}`}
             >
               ACTIVE INTERROGATION
             </button>
 
             <button
               onClick={() => handleScenarioSelect('CRITICAL_DEGRADATION')}
-              className={px-2.5 py-1 rounded text-[11px] font-bold transition-all border }
+              className={`px-2.5 py-1 rounded text-[11px] font-bold transition-all border ${currentScenario === 'CRITICAL_DEGRADATION' ? 'bg-cyan-600 border-cyan-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-600'}`}
             >
               CRITICAL DEGRADATION
             </button>
@@ -2704,8 +2702,8 @@ function App() {
               <React.Fragment key={st.id}>
                 <div
                   onClick={() => setActiveUspModal(st)}
-                  className={lex items-center gap-1.5 px-3 py-1.5 rounded-lg cursor-pointer transition-all border }
-                  title={${st.title}: }
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg cursor-pointer transition-all border ${isHighlight ? 'border-cyan-500 bg-cyan-500/10' : 'border-slate-800 bg-slate-900/40'}`}
+                  title={st.title}
                 >
                   <Icon name={st.icon} size={12} className={isHighlight ? 'text-cyan-400' : 'text-slate-500'} />
                   <span>{st.step}. {st.label}</span>
@@ -2732,7 +2730,7 @@ function App() {
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-medium transition-all }
+                className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-medium transition-all ${isActive ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30' : 'text-slate-400 hover:bg-slate-800/60'}`}
               >
                 <Icon name={item.icon} size={16} className={isActive ? 'text-cyan-400' : 'text-slate-500'} />
                 <span>{item.label}</span>
@@ -2752,13 +2750,13 @@ function App() {
                 <div
                   key={k}
                   onClick={() => { setSelectedJoint(k); setInspectModalJoint(j); }}
-                  className={p-2.5 rounded-lg border cursor-pointer transition-all flex items-center justify-between text-[11px] }
+                  className={`p-2.5 rounded-lg border cursor-pointer transition-all flex items-center justify-between text-[11px] ${isSel ? 'border-cyan-500 bg-cyan-500/10' : 'border-slate-800 bg-slate-900/40'}`}
                 >
                   <div className="flex items-center gap-2">
-                    <span className={w-2 h-2 rounded-full }></span>
+                    <span className={`w-2 h-2 rounded-full bg-${j.statusColor}-500`}></span>
                     <strong className="text-slate-200">{j.id}</strong>
                   </div>
-                  <span className={ont-bold }>
+                  <span className={`font-bold ${j.healthScore > 85 ? 'text-emerald-400' : j.healthScore >= 70 ? 'text-amber-400' : 'text-rose-400'}`}>
                     {j.healthScore}%
                   </span>
                 </div>
