@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPLICE-GUARD | Context-Aware Predictive Conveyor Joint Monitoring</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2306b6d4' stroke-width='2'><path d='M2 12h20M7 8l-5 4 5 4M17 8l5 4-5 4'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cyan: '#06b6d4',
+              blue: '#3b82f6',
+              emerald: '#10b981',
+              amber: '#f59e0b',
+              rose: '#f43f5e',
+              purple: '#a855f7',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            display: ['Chakra Petch', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- React 18 & ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <!-- Babel for JSX compilation -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+
+  <script>
+    // Initialize Theme immediately to prevent flash
+    (function() {
+      const savedTheme = localStorage.getItem('splice_guard_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+</head>
+<body class="bg-grid-pattern min-h-screen">
+  <div id="root">
+    <!-- Initial Loading State -->
+    <div class="h-screen w-screen flex flex-col items-center justify-center bg-[#080c14] text-cyan-400 font-mono">
+      <div class="relative w-16 h-16 mb-4">
+        <div class="absolute inset-0 rounded-full border-2 border-cyan-500/20 animate-ping"></div>
+        <div class="absolute inset-0 rounded-full border-2 border-t-cyan-400 border-r-transparent border-b-cyan-500/40 border-l-transparent animate-spin"></div>
+        <div class="absolute inset-4 rounded-full bg-cyan-500/10 flex items-center justify-center text-xs font-bold">SG</div>
+      </div>
+      <div class="text-sm tracking-widest uppercase font-semibold text-slate-200">Initializing SPLICE-GUARD</div>
+      <div class="text-xs text-slate-500 mt-1">Iron Ore Conveyor Digital Twin • Edge Telemetry Engine</div>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script type="text/babel" src="app.js"></script>
+</body>
+</html>
