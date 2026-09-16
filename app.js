@@ -2424,9 +2424,35 @@ function App() {
     return () => clearInterval(progressInterval);
   }, [telemetry.isRunning, telemetry.speed]);
 
-  // Natural Sensor Noise / Fluctuation Loop
+  // --- LIVE HARDWARE MODE ---
+  // Set to your Flask gateway's address (see server.py). Leave as '' to fall
+  // back to the local simulated telemetry loop below (useful with no hardware attached).
+  const HARDWARE_API_BASE = ''; // e.g. 'http://192.168.1.50:8000'
+  const [hardwareConnected, setHardwareConnected] = useState(false);
+
   useEffect(() => {
-    if (!telemetry.isRunning) return;
+    if (!HARDWARE_API_BASE) return;
+    const poll = setInterval(async () => {
+      try {
+        const [tRes, jRes] = await Promise.all([
+          fetch(`${HARDWARE_API_BASE}/api/telemetry`),
+          fetch(`${HARDWARE_API_BASE}/api/joints`)
+        ]);
+        const t = await tRes.json();
+        const j = await jRes.json();
+        setTelemetry((prev) => ({ ...prev, ...t, isRunning: prev.isRunning }));
+        setJoints(j);
+        setHardwareConnected(true);
+      } catch (e) {
+        setHardwareConnected(false); // gateway unreachable, keep last known values
+      }
+    }, 1000);
+    return () => clearInterval(poll);
+  }, [HARDWARE_API_BASE]);
+
+  // Natural Sensor Noise / Fluctuation Loop (simulation fallback — skipped once hardware is live)
+  useEffect(() => {
+    if (HARDWARE_API_BASE || !telemetry.isRunning) return;
     const telemetryInterval = setInterval(() => {
       setTelemetry((prev) => {
         // Natural micro fluctuations
